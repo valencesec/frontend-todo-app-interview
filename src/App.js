@@ -49,8 +49,8 @@ function App() {
         <div className="Api-key">
           <span>Enter API key from email: </span>
           <input
-            className="App-input"
-            type="text"
+            className="Api-input"
+            type="password"
             value={apiKey}
             onChange={(textEvent) => {
               localStorage.setItem(
