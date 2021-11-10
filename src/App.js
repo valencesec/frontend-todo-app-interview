@@ -5,33 +5,29 @@ const apiKeyLocalStorageKey = "apiKey";
 
 function ToDoItem({ id, status, tags, text }) {
   return (
-    <>
-      <ul className="App-todo-item">
-        <li>Id: {id}</li>
-        <li>Status: {status}</li>
-        <li>Tags: {tags}</li>
-        <li>Text: {text}</li>
-      </ul>
-    </>
+    <div className="App-todo-item">
+      <span>Id: {id}</span>
+      <span>Status: {status}</span>
+      <span>Tags: {tags}</span>
+      <span>Text: {text}</span>
+    </div>
   );
 }
 
 function App() {
   const [apiKey, setApiKey] = React.useState("");
   const [todos, setTodos] = React.useState([]);
-  React.useEffect(()=>{
-    const apiKeyFromLocalStorage = localStorage.getItem(
-      apiKeyLocalStorageKey
-    );
+  React.useEffect(() => {
+    const apiKeyFromLocalStorage = localStorage.getItem(apiKeyLocalStorageKey);
     if (apiKeyFromLocalStorage) {
       localStorage.setItem(apiKeyLocalStorageKey, apiKeyFromLocalStorage);
       setApiKey(apiKeyFromLocalStorage);
     }
-  }, [])
+  }, []);
 
   React.useEffect(() => {
     async function callTodosApi() {
-      const response = await fetch("<BACKEND URL>", {
+      const response = await fetch("<BACKEND_URL>", {
         headers: {
           "X-Api-Key": apiKey,
         },
@@ -50,8 +46,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          <span style={{ padding: "10px" }}>Enter API key from email:</span>
+        <div className="Api-key">
+          <span>Enter API key from email: </span>
           <input
             className="App-input"
             type="text"
@@ -64,15 +60,21 @@ function App() {
               setApiKey(textEvent.target.value);
             }}
           />
-        </p>
-        {todos.map((todo) => (
-          <ToDoItem
-            status={todo.fields.Status}
-            id={todo.id}
-            tags={todo.fields.Tags}
-            text={todo.fields.Text}
-          />
-        ))}
+        </div>
+        <div className="Todo-list">
+          {todos.length > 0 ? (
+            todos.map((todo) => (
+              <ToDoItem
+                status={todo.fields.Status}
+                id={todo.id}
+                tags={todo.fields.Tags}
+                text={todo.fields.Text}
+              />
+            ))
+          ) : (
+            <span>No items</span>
+          )}
+        </div>
       </header>
     </div>
   );
